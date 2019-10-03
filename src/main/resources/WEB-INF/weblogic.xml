@@ -1,0 +1,3 @@
+<prefer-application-packages>
+  <package-name>org.opensaml.*</package-name>
+</prefer-application-packages>

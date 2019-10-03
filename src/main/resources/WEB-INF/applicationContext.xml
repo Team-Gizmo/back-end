@@ -1,0 +1,1 @@
+<jee:jndi-lookup id="dataSource" resource-ref="true" jndi-name="jdbc/alias" expected-type="javax.sql.DataSource" />

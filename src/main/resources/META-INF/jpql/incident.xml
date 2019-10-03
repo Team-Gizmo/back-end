@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="1.0" xmlns="http://java.sun.com/xml/ns/persistence/orm" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd ">
+  <named-query name="getAllIncidents">
+    <query>
+      SELECT i
+      FROM Incident i
+      ORDER BY i.name ASC
+    </query>
+  </named-query>
+  <named-query name="getAllKeywords">
+    <query>
+      SELECT k
+      FROM Keyword k
+      ORDER BY k.name ASC
+    </query>
+  </named-query>
+  <named-query name="countIncidentsByName">
+    <query>
+      SELECT COUNT(i.id)
+      FROM Incident i
+      WHERE UPPER(i.name) = :name
+    </query>
+  </named-query>
+  <named-query name="countKeywordsByName">
+    <query>
+      SELECT COUNT(k.id)
+      FROM Keyword k
+      WHERE UPPER(k.name) = :name
+    </query>
+  </named-query>
+  <named-query name="getIncidentByName">
+    <query>
+      SELECT i
+      FROM Incident i
+      WHERE UPPER(i.name) = :name
+    </query>
+  </named-query>
+  <named-query name="getIncidentsByKeywords">
+    <query>
+      SELECT DISTINCT i
+      FROM Incident i
+      JOIN i.keywords k
+      WHERE k.name IN :keywordNames
+    </query>
+  </named-query>
+</entity-mappings>

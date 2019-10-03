@@ -1,0 +1,38 @@
+copy jar driver file to <Wildfly install>/bin/jars, or update below reference
+
+start Wildfly
+
+cd to <Wildfly install>/bin
+
+./jboss-cli.sh or jboss-cli.bat
+
+module add --name=org.postgresql --slot=main --resources=/jars/postgresql-42.0.0.jar --dependencies=javax.api,javax.transaction.api
+
+/subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgresql",driver-class-name=org.postgresql.Driver)
+
+
+lfredric@DEV-D-116G1 /c/Program Files/PostgreSQL/9.6/bin
+$ psql -U postgres
+Password for user postgres:
+<xxx456x>
+psql (9.6.2)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# select * from incident;
+ id |       create_date       |                                                            description                                                             |    name    | resolve_date | solution | reassigedto_id
+----+-------------------------+------------------------------------------------------------------------------------------------------------------------------------+------------+--------------+----------+----------------
+  5 | 2017-02-28 14:18:22.132 | Client is trying to give admin access to his employee with access only to change hours and deductions and submit payroll           | INC1107398 |              |          |
+  6 | 2017-02-28 14:18:22.133 | Employee receives attached critical error when trying to migrate to flex                                                           | INC1116948 |              |          |
+  7 | 2017-02-28 14:18:22.134 | Employees unable to view or download reports when in Flex, because PRS cannot get Online Packages to populate for the accounts.    | INC1113942 |              |          |
+  8 | 2017-02-28 14:18:22.135 | MetricAlertCustom: BSM9: Unique ID ProcRunner Failure: /EnterpriseService/ScheduledEnterpriseMessage/00471R9MIVTSPMIZIHXR/A8012837 | INC1113599 |              |          |
+  4 | 2017-02-28 14:18:22.131 | Benefits admin the only benefits option available to admin when logging into their personal account                                | INC1111372 |              |          |              1
+(5 rows)
+
+
+INSERT INTO keyword (id,create_date,name) VALUES (32,CURRENT_TIMESTAMP,'Unexpected App Error');
+
+
+ALTER TABLE incident ALTER COLUMN solution TYPE text;
