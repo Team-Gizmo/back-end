@@ -44,7 +44,7 @@ public class Starter {
 		LOG.info("Starter called");
 		Connection conn = getConnectionPostgres();
 		try {
-			LOG.info("DB Connection = " + conn.getSchema());
+			LOG.info("Connecting to '" + conn.getCatalog() + "' database catalog");
 		}
 		catch (Exception e) {
 			LOG.error(e);
@@ -71,7 +71,7 @@ public class Starter {
 		initializeStartTime();
 		initializeMemory();
 		String host = getHost();
-    LOG.info("Initialization on " + host);
+    LOG.info("Initialization complete on " + host);
   }
 	
 	@Schedule(hour="07", minute="35", persistent=false)
