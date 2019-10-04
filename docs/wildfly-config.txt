@@ -1,0 +1,11 @@
+    
+    -- open the back-end to any IP address
+    
+    <interfaces>
+        ...
+        <interface name="any">
+            <any-address/>
+        </interface>
+    </interfaces>
+    
+    <socket-binding-group name="standard-sockets" default-interface="any" port-offset="${jboss.socket.binding.port-offset:0}">
