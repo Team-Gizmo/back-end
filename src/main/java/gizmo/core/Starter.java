@@ -74,7 +74,7 @@ public class Starter {
     LOG.info("Initialization complete on " + host);
   }
 	
-	@Schedule(hour="11", minute="42", persistent=false)
+	@Schedule(hour="02", minute="30", persistent=false)
 	public void scheduleDbBackup() {
 		LOG.info("Db backup fired");
 		runDbBackup();
@@ -90,7 +90,7 @@ public class Starter {
 	}
 	
 	private void runDbBackup() {
-		DbBackup backup = new DbBackup();
+		DbBackup backup = new DbBackup(em);
 		backup.run();
 	}
 	

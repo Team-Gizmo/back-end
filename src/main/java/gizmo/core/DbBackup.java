@@ -3,20 +3,19 @@ package gizmo.core;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-
-import gizmo.core.db.AbstractDAO;
-import gizmo.core.db.IncidentDAO;
-import gizmo.core.db.IncidentKeywordDAO;
-import gizmo.core.db.KeywordDAO;
 
 
 @Singleton
@@ -29,7 +28,13 @@ public class DbBackup {
 	
 	private static final String FILE_LOCATION = "C:\\Users\\lfrederi\\OneDrive - Paychex\\DbBackup\\";
 	
+	private EntityManager em;
+	
 	public DbBackup() {}
+	
+	public DbBackup(EntityManager em) {
+		this.em = em;
+	}
 	
 	public void run() {
 		LOG.info("Running...");
@@ -37,7 +42,7 @@ public class DbBackup {
 		Collection<Object[]> incidents = getAllIncidents();
 		Collection<Object[]> keywords = getAllKeywords();
 		Collection<Object[]> incidentKeywords = getAllIncidentKeywords();
-		Long maxIncidentId = getIncidentSequence();
+		BigInteger maxIncidentId = getIncidentSequence();
 		String incidentInsert = createIncidentInsertStatement(incidents);
 		String keywordInsert = createKeywordInsertStatement(keywords);
 		String incidentKeywordInsert = createIncidentKeywordInsertStatement(incidentKeywords);
@@ -57,34 +62,68 @@ public class DbBackup {
 		writeToFile(file, sb.toString());
 	}
 	
+	@SuppressWarnings("unchecked")
 	private Collection<Object[]> getAllIncidents() {
-		AbstractDAO dao = new IncidentDAO();
-		Collection<Object[]> data = dao.getRecords(0);
-		return data;
+		String sql = getAllIncidentsQuery();
+		Query query = em.createNativeQuery(sql);
+		return query.getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private Collection<Object[]> getAllKeywords() {
-		AbstractDAO dao = new KeywordDAO();
-		Collection<Object[]> data = dao.getRecords(0);
-		return data;
+		String sql = getAllKeywordsQuery();
+		Query query = em.createNativeQuery(sql);
+		return query.getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private Collection<Object[]> getAllIncidentKeywords() {
-		AbstractDAO dao = new IncidentKeywordDAO();
-		Collection<Object[]> data = dao.getRecords(0);
-		return data;
+		String sql = getAllIncidentKeywordQuery();
+		Query query = em.createNativeQuery(sql);
+		return query.getResultList();
 	}
 	
-	private Long getIncidentSequence() {
-		IncidentDAO dao = new IncidentDAO();
-		return dao.getMaxId();
+	@SuppressWarnings("unchecked")
+	private BigInteger getIncidentSequence() {
+		String sql = getMaxIdQuery();
+		Query query = em.createNativeQuery(sql);
+		List<Object> results = query.getResultList();
+		BigInteger value = (BigInteger) results.get(0);
+		return value;
+	}
+	
+	private String getAllIncidentsQuery() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT id, name, description, solution, create_date ");
+		sb.append("FROM Incident ");
+		sb.append("ORDER BY id ASC");
+		return sb.toString();
+	}
+	
+	private String getAllKeywordsQuery() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT id, name, create_date ");
+		sb.append("FROM Keyword ");
+		sb.append("ORDER BY id ASC");
+		return sb.toString();
+	}
+	
+	private String getAllIncidentKeywordQuery() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT incident_id, keyword_id ");
+		sb.append("FROM Incident_Keyword");
+		return sb.toString();
+	}
+	
+	private String getMaxIdQuery() {
+		return "SELECT nextval('hibernate_sequence');";
 	}
 	
 	private String createIncidentInsertStatement(Collection<Object[]> data) {
 		StringBuilder allRecords = new StringBuilder();
 		for (Object[] row : data) {
 			StringBuilder sb = new StringBuilder();
-			Long id = (Long)row[0];
+			BigInteger id = (BigInteger)row[0];
 			String name = (String)row[1];
 			String desc = (String)row[2];
 			String description = Util.escapeQuotes(desc);
@@ -117,7 +156,7 @@ public class DbBackup {
 		StringBuilder allRecords = new StringBuilder();
 		for (Object[] row : data) {
 			StringBuilder sb = new StringBuilder();
-			Long id = (Long)row[0];
+			BigInteger id = (BigInteger)row[0];
 			String s = (String)row[1];
 			String name = Util.escapeQuotes(s);
 			Timestamp createDate = (Timestamp)row[2];
@@ -138,8 +177,8 @@ public class DbBackup {
 		StringBuilder allRecords = new StringBuilder();
 		for (Object[] row : data) {
 			StringBuilder sb = new StringBuilder();
-			Long incidentId= (Long)row[0];
-			Long keywordId= (Long)row[1];
+			BigInteger incidentId = (BigInteger)row[0];
+			BigInteger keywordId= (BigInteger)row[1];
 			sb.append("INSERT INTO Incident_Keyword (incident_id, keyword_id) VALUES (");
 			sb.append(incidentId);
 			sb.append(",");
@@ -151,9 +190,8 @@ public class DbBackup {
 		return allRecords.toString();
 	}
 	
-	private String createSequenceInsertStatement(Long value) {
-		String s = "SELECT setval('hibernate_sequence', (" + value + "))";
-		return s;
+	private String createSequenceInsertStatement(BigInteger value) {
+		return "SELECT setval('hibernate_sequence', (" + value.longValue() + "))";
 	}
 	
 	private void writeToFile(String fileName, String s) {
