@@ -38,16 +38,12 @@ public class DbBackup {
 		Collection<Object[]> keywords = getAllKeywords();
 		Collection<Object[]> incidentKeywords = getAllIncidentKeywords();
 		Long maxIncidentId = getIncidentSequence();
-		
-		String alterSolutionColumn = "ALTER TABLE incident ALTER COLUMN solution TYPE text;";
 		String incidentInsert = createIncidentInsertStatement(incidents);
 		String keywordInsert = createKeywordInsertStatement(keywords);
 		String incidentKeywordInsert = createIncidentKeywordInsertStatement(incidentKeywords);
 		String incidentSequenceInsert = createSequenceInsertStatement(maxIncidentId);
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(alterSolutionColumn);
-		sb.append(DOUBLE_LINE_BREAK);
 		sb.append(incidentInsert);
 		sb.append(DOUBLE_LINE_BREAK);
 		sb.append(keywordInsert);
@@ -110,7 +106,7 @@ public class DbBackup {
 				sb.append("','");
 			}
 			sb.append(createDate);
-			sb.append("')");
+			sb.append("');");
 			sb.append(SINGLE_LINE_BREAK);
 			allRecords.append(sb.toString());
 		}
@@ -131,7 +127,7 @@ public class DbBackup {
 			sb.append(name);
 			sb.append("','");
 			sb.append(createDate);
-			sb.append("')");
+			sb.append("');");
 			sb.append(SINGLE_LINE_BREAK);
 			allRecords.append(sb.toString());
 		}
@@ -148,7 +144,7 @@ public class DbBackup {
 			sb.append(incidentId);
 			sb.append(",");
 			sb.append(keywordId);
-			sb.append(")");
+			sb.append(");");
 			sb.append(SINGLE_LINE_BREAK);
 			allRecords.append(sb.toString());
 		}
