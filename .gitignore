@@ -3,6 +3,7 @@
 .settings*
 /target
 /bin
+.project
 node_modules
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
