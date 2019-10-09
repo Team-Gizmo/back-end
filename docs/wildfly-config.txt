@@ -1,11 +1,28 @@
-    
-    -- open the back-end to any IP address
-    
-    <interfaces>
-        ...
-        <interface name="any">
-            <any-address/>
-        </interface>
-    </interfaces>
-    
-    <socket-binding-group name="standard-sockets" default-interface="any" port-offset="${jboss.socket.binding.port-offset:0}">
+
+ -- additions to standalone.xml file
+
+ -- new datasource
+ 
+ <datasource jndi-name="java:jboss/datasources/PostgresDS" pool-name="Postgresql" enabled="true" use-java-context="true">
+     <connection-url>jdbc:postgresql://localhost:5432/postgres</connection-url>
+     <driver>postgres</driver>
+     <security>
+         <user-name>username</user-name>
+         <password>password</password>
+     </security>
+</datasource>
+
+<driver name="postgres" module="org.postgresql">
+    <driver-class>org.postgresql.Driver</driver-class>
+</driver> 
+  
+-- open the back-end to any IP address
+
+<interfaces>
+    ...
+    <interface name="any">
+        <any-address/>
+    </interface>
+</interfaces>
+
+<socket-binding-group name="standard-sockets" default-interface="any" port-offset="${jboss.socket.binding.port-offset:0}">
