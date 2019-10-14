@@ -1,8 +1,8 @@
 package gizmo.business.incident.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,8 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -26,7 +24,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import gizmo.business.incident.control.IncidentEntityListener;
 import gizmo.business.keyword.entity.Keyword;
-
 
 
 @Entity
@@ -60,37 +57,37 @@ public class Incident {
   @Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
   private long version = 0L;
 	
-	@Temporal (TemporalType.TIMESTAMP)
-  @Column(name="create_date", updatable=false)
-  private Date createDate;
+	@Column(name="create_date", updatable=false, nullable=false)
+  private LocalDateTime createDate;
 	
-	@Temporal (TemporalType.TIMESTAMP)
-  @Column(name="resolve_date", updatable=true)
-  private Date resolveDate;
+	@Column(name="resolve_date", updatable=false, nullable=false)
+  private LocalDateTime resolveDate;
 
 	public Incident() {
-		this.createDate = new Date();
+		this.createDate = LocalDateTime.now();
 	}
 	
-	public Incident(String name, String description) {
+	public Incident(@NotNull String name, @NotNull String description) {
 		this.name = name;
 		this.description = description;
-		this.createDate = new Date();
+		this.createDate = LocalDateTime.now();
 	}
 
+	public Incident(@NotNull String name, @NotNull String description, String solution) {
+		this.name = name;
+		this.description = description;
+		this.solution = solution;
+	}
+	
 	public Incident(Long id, String name, String description, String solution) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.solution = solution;
 	}
-	
+
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -129,15 +126,15 @@ public class Incident {
 		return version;
 	}
 	
-	public Date getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
 
-	public Date getResolveDate() {
+	public LocalDateTime getResolveDate() {
 		return resolveDate;
 	}
 
-	public void setResolveDate(Date resolveDate) {
+	public void setResolveDate(LocalDateTime resolveDate) {
 		this.resolveDate = resolveDate;
 	}
 

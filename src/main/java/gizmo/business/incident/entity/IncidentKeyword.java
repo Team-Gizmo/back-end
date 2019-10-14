@@ -24,24 +24,31 @@ public class IncidentKeyword {
 	public String getKeywordName() {
 		return keywordName;
 	}
+	
 	public void setKeywordName(String keywordName) {
 		this.keywordName = keywordName;
 	}
+	
 	public String getIncidentName() {
 		return incidentName;
 	}
+	
 	public void setIncidentName(String incidentName) {
 		this.incidentName = incidentName;
 	}
+	
 	public String getDescription() {
 		return description;
 	}
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	public String getSolution() {
 		return solution;
 	}
+	
 	public void setSolution(String solution) {
 		this.solution = solution;
 	}

@@ -1,4 +1,4 @@
-package gizmo.business.incident.entity;
+package gizmo.business.assignmentGroup.entity;
 
 import java.time.LocalDateTime;
 
@@ -15,26 +15,26 @@ import gizmo.core.enums.Action;
 
 
 @Entity
-@Table(name="incident_history")
-public class IncidentHistory {
+@Table(name="assignment_group_history")
+public class AssignmentGroupHistory {
 
 	@Id
   @GeneratedValue
   private Long id;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
-  @JoinColumn(name="incident_id")
-	private Incident incident;
+  @JoinColumn(name="assignment_group_id")
+	private AssignmentGroup group;
 	
 	private Action action;
 	
 	@Column(name="modified_date", updatable=false, nullable = false)
   private LocalDateTime modifiedDate;
 	
-	public IncidentHistory() {}
+	public AssignmentGroupHistory() {}
 	
-	public IncidentHistory(Incident incident, Action action) {
-		this.incident = incident;
+	public AssignmentGroupHistory(AssignmentGroup group, Action action) {
+		this.group = group;
 		this.action = action;
 		this.modifiedDate = LocalDateTime.now();
 	}
@@ -42,8 +42,9 @@ public class IncidentHistory {
 	public Long getId() {
 		return id;
 	}
-	public Incident getIncident() {
-		return incident;
+
+	public AssignmentGroup getAssignmentGroup() {
+		return group;
 	}
 
 	public Action getAction() {

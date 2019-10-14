@@ -1,4 +1,4 @@
-package gizmo.business.keyword.entity;
+package gizmo.business.assignmentGroup.entity;
 
 import java.time.LocalDateTime;
 
@@ -7,19 +7,22 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import gizmo.business.keyword.control.KeywordEntityListener;
+import gizmo.business.assignmentGroup.control.AssignmentGroupEntityListener;
 
 
 @Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@EntityListeners(KeywordEntityListener.class)
-public class Keyword {
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
+@EntityListeners(AssignmentGroupEntityListener.class)
+public class AssignmentGroup {
 
 	@Id
 	@GeneratedValue
@@ -30,12 +33,12 @@ public class Keyword {
 	
 	@Column(name="create_date", updatable=false, nullable=false)
   private LocalDateTime createDate;
-	
-	public Keyword() {
+
+	public AssignmentGroup() {
 		this.createDate = LocalDateTime.now();
 	}
-
-	public Keyword(@NotNull String name) {
+	
+	public AssignmentGroup(@NotNull String name) {
 		this.name = name;
 		this.createDate = LocalDateTime.now();
 	}
