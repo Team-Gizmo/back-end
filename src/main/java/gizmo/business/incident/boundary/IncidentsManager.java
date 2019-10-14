@@ -2,6 +2,7 @@ package gizmo.business.incident.boundary;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,6 +24,8 @@ import gizmo.core.Util;
 public class IncidentsManager {
 
 	private static final Logger LOG = Logger.getLogger(IncidentsManager.class);
+	
+	private static final int MAX_NUMBER_OF_KEYWORDS = 2;
 	
 	@PersistenceContext(unitName="primary")
 	EntityManager em;
@@ -61,6 +64,9 @@ public class IncidentsManager {
 		incident = em.merge(incident);
 		em.flush();
 		int[] keywordIds = request.getKeywordIds();
+		if (keywordIds.length > MAX_NUMBER_OF_KEYWORDS) {
+			keywordIds = Arrays.copyOfRange(keywordIds, 0, keywordIds.length - 1);
+		}
 		Collection<Keyword> allKeywords = new ArrayList<>();
 		for (int i = 0, j = keywordIds.length; i < j; i++) {
 			Keyword k = em.find(Keyword.class, new Long(keywordIds[i]));

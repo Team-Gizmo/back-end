@@ -76,20 +76,26 @@ public class IncidentsResource {
 	public Response createNewIncident(Composite request, @Context UriInfo info) {
 		Response.ResponseBuilder builder = null;
 		if (manager.doesIncidentExist(request.getIncident().getName())) {		
-			JsonObject conf = Json.createObjectBuilder().
-					add("Incident already exists", request.getIncident().getName()).
-					build();
-			builder = Response.status(Response.Status.CONFLICT).entity(conf);
+			JsonObject conf = Json
+					.createObjectBuilder()
+					.add("Incident already exists", request.getIncident().getName())
+					.build();
+			builder = Response
+					.status(Response.Status.CONFLICT)
+					.entity(conf);
 		}
 		else {
 			Incident incident = manager.createNewIncident(request);
 			long id = incident.getId();
 			URI uri = info.getAbsolutePathBuilder().path("/"+id).build();
-			JsonObject conf = Json.createObjectBuilder().
-				add("confirmation-id", id).
-				add("name", incident.getName()).
-				build();
-			builder = Response.created(uri).entity(conf);
+			JsonObject conf = Json
+					.createObjectBuilder()
+					.add("confirmation-id", id)
+					.add("name", incident.getName())
+					.build();
+			builder = Response
+					.created(uri)
+					.entity(conf);
 		}
 		return builder.build();
 	}
