@@ -27,7 +27,7 @@ public class KeywordHistory {
 	
 	private Action action;
 	
-	@Column(name="modified_date", updatable=false, nullable = false)
+	@Column(name="modified_date", updatable=false, nullable=false)
   private LocalDateTime modifiedDate;
 	
 	public KeywordHistory() {}
