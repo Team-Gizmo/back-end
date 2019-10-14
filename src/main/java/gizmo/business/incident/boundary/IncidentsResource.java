@@ -1,10 +1,10 @@
 package gizmo.business.incident.boundary;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -23,12 +23,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import gizmo.business.incident.entity.Composite;
 import gizmo.business.incident.entity.Incident;
 import gizmo.business.incident.entity.IncidentKeyword;
-import gizmo.core.Util;
 
 
 
@@ -52,15 +52,14 @@ public class IncidentsResource {
 	@Path("search/keyword")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<Incident> getIncidentsByKeywordIds(@QueryParam("0") String sA, @QueryParam("1") String sB, @QueryParam("2") String sC) {
-		List<String> rawValues = Arrays.asList(sA,sB,sC);
-		List<String> values = Util.removeEmptyValues(rawValues);
-		// TODO: fix the below
-		List<Long> longValues = new ArrayList<Long>();
-		for (String s : values) {
-			longValues.add(new Long(s));
-		}
-		return manager.getIncidentsByKeywordIds(longValues);
+	public Collection<Incident> getIncidentsByKeywordIds(@QueryParam("0") String sA, @QueryParam("1") String sB) {
+		List<String> input = Arrays.asList(sA,sB);
+		List<Long> values = input
+				.stream()
+				.filter(e -> StringUtils.isNotBlank(e))
+				.map(Long::valueOf)
+				.collect(Collectors.toList());
+		return manager.getIncidentsByKeywordIds(values);
 	}
 	
 	@GET
@@ -103,18 +102,26 @@ public class IncidentsResource {
 		Response.ResponseBuilder builder = null;
 		Incident incident = manager.updateAll(incidentId, request);
 		if (incident != null) {
-			URI uri = info.getAbsolutePathBuilder().path("/"+incidentId).build();
-			JsonObject conf = Json.createObjectBuilder().
-				add("confirmation-id", incidentId).
-				add("name", incident.getName()).
-				build();
-			builder = Response.created(uri).entity(conf);
+			URI uri = info
+					.getAbsolutePathBuilder()
+					.path("/"+incidentId)
+					.build();
+			JsonObject conf = Json
+					.createObjectBuilder()
+					.add("confirmation-id", incidentId)
+					.add("name", incident.getName())
+					.build();
+			builder = Response
+					.created(uri)
+					.entity(conf);
 		}
 		else {
-			JsonObject conf = Json.createObjectBuilder().
-					add("Could not find Incident", incidentId).
-					build();
-			builder = Response.status(Response.Status.NOT_FOUND).entity(conf);
+			JsonObject conf = Json.createObjectBuilder()
+					.add("Could not find Incident", incidentId)
+					.build();
+			builder = Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(conf);
 		}
 		return builder.build();
 	}
@@ -127,18 +134,26 @@ public class IncidentsResource {
 		Response.ResponseBuilder builder = null;
 		Incident incident = manager.updateSolution(incidentId, request);
 		if (incident != null) {
-			URI uri = info.getAbsolutePathBuilder().path("/"+incidentId).build();
-			JsonObject conf = Json.createObjectBuilder().
-				add("confirmation-id", incidentId).
-				add("name", incident.getName()).
-				build();
-			builder = Response.created(uri).entity(conf);
+			URI uri = info
+					.getAbsolutePathBuilder()
+					.path("/"+incidentId)
+					.build();
+			JsonObject conf = Json.createObjectBuilder()
+					.add("confirmation-id", incidentId)
+					.add("name", incident.getName())
+					.build();
+			builder = Response
+					.created(uri)
+					.entity(conf);
 		}
 		else {
-			JsonObject conf = Json.createObjectBuilder().
-					add("Could not find Incident", incidentId).
-					build();
-			builder = Response.status(Response.Status.NOT_FOUND).entity(conf);
+			JsonObject conf = Json
+					.createObjectBuilder()
+					.add("Could not find Incident", incidentId)
+					.build();
+			builder = Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(conf);
 		}
 		return builder.build();
 	}

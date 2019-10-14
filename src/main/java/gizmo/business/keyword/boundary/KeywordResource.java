@@ -55,20 +55,29 @@ public class KeywordResource {
 	public Response createNewKeyword(Keyword request, @Context UriInfo info) {
 		Response.ResponseBuilder builder = null;
 		if (manager.doesKeywordExist(request.getName())) {		
-			JsonObject conf = Json.createObjectBuilder().
-					add("Keyword already exists", request.getName()).
-					build();
-			builder = Response.status(Response.Status.CONFLICT).entity(conf);
+			JsonObject conf = Json
+					.createObjectBuilder()
+					.add("Keyword already exists", request.getName())
+					.build();
+			builder = Response
+					.status(Response.Status.CONFLICT)
+					.entity(conf);
 		}
 		else {
 			Keyword keyword = manager.createNewKeyword(request);
 			long id = keyword.getId();
-			URI uri = info.getAbsolutePathBuilder().path("/"+id).build();
-			JsonObject conf = Json.createObjectBuilder().
-				add("confirmation-id", id).
-				add("name", keyword.getName()).
-				build();
-			builder = Response.created(uri).entity(conf);
+			URI uri = info
+					.getAbsolutePathBuilder()
+					.path("/"+id)
+					.build();
+			JsonObject conf = Json
+					.createObjectBuilder()
+					.add("confirmation-id", id)
+					.add("name", keyword.getName())
+					.build();
+			builder = Response
+					.created(uri)
+					.entity(conf);
 		}
 		return builder.build();
 	}
@@ -81,18 +90,27 @@ public class KeywordResource {
 		Response.ResponseBuilder builder = null;
 		Keyword keyword = manager.update(keywordId, request);
 		if (keyword != null) {
-			URI uri = info.getAbsolutePathBuilder().path("/"+keywordId).build();
-			JsonObject conf = Json.createObjectBuilder().
-				add("confirmation-id", keywordId).
-				add("name", keyword.getName()).
-				build();
-			builder = Response.created(uri).entity(conf);
+			URI uri = info
+					.getAbsolutePathBuilder()
+					.path("/"+keywordId)
+					.build();
+			JsonObject conf = Json
+					.createObjectBuilder()
+					.add("confirmation-id", keywordId)
+					.add("name", keyword.getName())
+					.build();
+			builder = Response
+					.created(uri)
+					.entity(conf);
 		}
 		else {
-			JsonObject conf = Json.createObjectBuilder().
-					add("Could not find Keyword", keywordId).
-					build();
-			builder = Response.status(Response.Status.NOT_FOUND).entity(conf);
+			JsonObject conf = Json
+					.createObjectBuilder()
+					.add("Could not find Keyword", keywordId)
+					.build();
+			builder = Response
+					.status(Response.Status.NOT_FOUND)
+					.entity(conf);
 		}
 		return builder.build();
 	}

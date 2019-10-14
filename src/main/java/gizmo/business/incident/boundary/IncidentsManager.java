@@ -87,22 +87,6 @@ public class IncidentsManager {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<Incident> getIncidentsByKeywords(List<String> keywords) {
-		String sql = getIncidentsByKeywordsQuery(keywords);
-		Query query = em.createNativeQuery(sql);
-		List<Object[]> list = query.getResultList();
-		Collection<Incident> values = new ArrayList<>();
-		for (Object[] objs : list) {
-			BigInteger id = (BigInteger)objs[0];
-			String name = (String)objs[1];
-			String description = (String)objs[2];
-			String solution = (String)objs[3];
-			values.add(new Incident(id.longValue(), name, description, solution));
-		}
-		return values;
-	}
-	
-	@SuppressWarnings("unchecked")
 	public Collection<Incident> getIncidentsByKeywordIds(List<Long> keywordIds) {
 		String sql = getIncidentsByKeywordIdsQuery(keywordIds);
 		Query query = em.createNativeQuery(sql);
@@ -135,28 +119,6 @@ public class IncidentsManager {
 		return values;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void getLinkingTable() {
-		Query query = em.createNativeQuery("SELECT * FROM Incident_Keyword");
-		List<Object[]> list = query.getResultList();
-		for (Object[] objs : list) {
-			BigInteger a = (BigInteger)objs[0];
-			BigInteger b = (BigInteger)objs[1];
-			LOG.info("A = " + a.intValue() + ", B = " + b.intValue());
-		}
-	}
-	
-	private String getIncidentsByKeywordsQuery(List<String> keywords) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT DISTINCT i.id, i.name, i.description, i.solution ");
-		sb.append("FROM Incident i ");
-		sb.append("JOIN Incident_Keyword ik ON i.id = ik.incident_id ");
-		sb.append("JOIN Keyword k ON ik.keyword_id = k.id ");
-		sb.append("WHERE UPPER(k.name) IN ");
-		sb.append(Util.convertStringListToTableIn(keywords));
-		return sb.toString();
-	}
-	 
 	private String getIncidentsByKeywordIdsQuery(List<Long> keywordIds) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT DISTINCT i.id, i.name, i.description, i.solution ");
