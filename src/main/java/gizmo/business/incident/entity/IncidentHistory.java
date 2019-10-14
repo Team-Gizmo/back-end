@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -22,7 +21,7 @@ public class IncidentHistory {
   @GeneratedValue
   private Long id;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
   @JoinColumn(name="incident_id")
 	private Incident incident;
 	
