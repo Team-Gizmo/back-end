@@ -12,6 +12,8 @@ DROP TABLE incident_history;
 
 DROP TABLE keyword_history;
 
+DROP TABLE assignment_group_history;
+
 CREATE TABLE incident (
    id bigint PRIMARY KEY NOT NULL,
    create_date timestamp NOT NULL,
@@ -78,6 +80,13 @@ CREATE TABLE incident_history (
 );
 
 CREATE TABLE keyword_history (
+   id bigint PRIMARY KEY NOT NULL,
+   keyword_id bigint NOT NULL,
+   action int NOT NULL,
+   modified_date timestamp NOT NULL
+);
+
+CREATE TABLE assignment_group_history (
    id bigint PRIMARY KEY NOT NULL,
    keyword_id bigint NOT NULL,
    action int NOT NULL,
