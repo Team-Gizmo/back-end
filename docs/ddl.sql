@@ -1,8 +1,12 @@
+DROP TABLE assignment_group_keyword;
+
 DROP TABLE incident_keyword;
 
 DROP TABLE incident;
 
 DROP TABLE keyword;
+
+DROP TABLE assignment_group;
 
 DROP TABLE incident_history;
 
@@ -26,7 +30,13 @@ CREATE TABLE keyword (
    name varchar(255) NOT NULL
 );
 
-ALTER TABLE keyword ADD CONSTRAINT keyword_name_constraint UNIQUE (name);
+CREATE TABLE assignment_group (
+   id bigint PRIMARY KEY NOT NULL,
+   create_date timestamp NOT NULL,
+   name varchar(255) NOT NULL
+);
+
+ALTER TABLE assignment_group ADD CONSTRAINT assignment_group_name_constraint UNIQUE (name);
 
 CREATE TABLE incident_keyword (
    incident_id bigint NOT NULL,
@@ -41,6 +51,22 @@ REFERENCES incident(id);
 
 ALTER TABLE incident_keyword
 ADD CONSTRAINT incident_keyword_keyword
+FOREIGN KEY (keyword_id)
+REFERENCES keyword(id);
+
+CREATE TABLE assignment_group_keyword (
+   assignment_group_id bigint NOT NULL,
+   keyword_id bigint NOT NULL,
+   CONSTRAINT assignment_group_keyword_pkey PRIMARY KEY (assignment_group_id, keyword_id)
+);
+
+ALTER TABLE assignment_group_keyword
+ADD CONSTRAINT assignment_group_group
+FOREIGN KEY (assignment_group_id)
+REFERENCES assignment_group(id);
+
+ALTER TABLE assignment_group_keyword
+ADD CONSTRAINT assignment_group_keyword
 FOREIGN KEY (keyword_id)
 REFERENCES keyword(id);
 
