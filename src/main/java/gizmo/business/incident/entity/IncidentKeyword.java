@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
+// NOTE: there is no need for this to be a managed entity; only a DTO between layers is needed
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IncidentKeyword {
