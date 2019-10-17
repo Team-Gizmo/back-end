@@ -61,8 +61,6 @@ public class IncidentsManager {
 	
 	public Incident createNewIncident(Composite request) {
 		Incident incident = request.getIncident();
-		incident = em.merge(incident);
-		em.flush();
 		int[] keywordIds = request.getKeywordIds();
 		if (keywordIds.length > MAX_NUMBER_OF_KEYWORDS) {
 			keywordIds = Arrays.copyOfRange(keywordIds, 0, keywordIds.length - 1);
@@ -75,8 +73,7 @@ public class IncidentsManager {
 			}
 		}
 		incident.setKeywords(allKeywords);
-		//em.persist(incident);
-		return incident;
+		return em.merge(incident);
 	}
 	
 	public Incident getByName(String name) {
