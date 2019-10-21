@@ -1,0 +1,27 @@
+Eclipse Photon - this version is easy to integrate with Wildfly 13
+
+    https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/photon/R/eclipse-java-photon-R-win32-x86_64.zip
+
+	If you want to run Wildfly within Eclipse, you'll need to install "JBoss Tools 4.6.0.Final" from the Eclipse Marketplace (Help > Eclipse Marketplace...)
+	
+	To get pass the company firewall: Windows > Preferences > General > Network Connections
+	    
+		edsbcs001
+		172.16.243.105
+	
+	need to be added to "Proxy bypass"
+
+	
+Wildfly 13.0.0.FINAL (Java EE Full & Web Distribution)
+
+    https://wildfly.org/downloads/
+
+
+Postgres 9.6 (or later if you prefer)
+
+    https://www.filehorse.com/download-postgresql-64/28060/
+	
+	
+Visual Studio Code
+
+    https://code.visualstudio.com/
