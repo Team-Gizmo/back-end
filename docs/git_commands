@@ -1,1 +1,19 @@
+
+-- clone the project
 git clone https://<username>:<password>@github.com/Team-Gizmo/back-end.git
+
+
+
+-- updating/adding/deleting a file or files
+
+1. git status
+
+2. git add --all
+
+3. git commit -m "Some message here"
+
+   -- local push
+4. git push
+
+   -- remote push
+5. git push https://<username>:<password>@github.com/Team-Gizmo/back-end.git
