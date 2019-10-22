@@ -1,26 +1,20 @@
 Incident
 
 {
-  "name": "INC1234567",
-  "description": "Description here",
-  "solution": "Some solution",
-  "keywords": [
+  "name" : "INC1234567",
+  "description" : "Description here",
+  "solution" : "Some solution",
+  "keywords" : [
     {
     "id": 9
     },
     {
-    "id": 11
-    },
-    {
-    "id": 13
-    },
-    {
-    "id": 14
+    "id": 10
     }
   ]
 }
 
 
-POST:   localhost:8080/sandbox/api/incidents
+POST:   http://dev-d-116g1.paychex.com:9090/gizmo/api/incidents
 
-PUT:    localhost:8080/sandbox/api/incidents/28
+PUT:    http://dev-d-116g1.paychex.com:9090/gizmo/api/incidents/28
