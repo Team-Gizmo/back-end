@@ -14,6 +14,8 @@ DROP TABLE keyword_history;
 
 DROP TABLE assignment_group_history;
 
+DROP SEQUENCE hibernate_sequence;
+
 CREATE TABLE incident (
    id bigint PRIMARY KEY NOT NULL,
    create_date timestamp NOT NULL,
@@ -92,3 +94,6 @@ CREATE TABLE assignment_group_history (
    action int NOT NULL,
    modified_date timestamp NOT NULL
 );
+
+CREATE SEQUENCE hibernate_sequence;
+SELECT setval('hibernate_sequence', 1);

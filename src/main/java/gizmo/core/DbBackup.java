@@ -191,7 +191,7 @@ public class DbBackup {
 	}
 	
 	private String createSequenceInsertStatement(BigInteger value) {
-		return "SELECT setval('hibernate_sequence', (" + value.longValue() + "))";
+		return "SELECT setval('hibernate_sequence', (" + value.longValue() + "));";
 	}
 	
 	private void writeToFile(String fileName, String s) {
